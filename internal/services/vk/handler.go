@@ -22,23 +22,27 @@ func (handler *Handler) HandleNotifications() error {
 	if err != nil {
 		return err
 	}
+
 	for _, telegramNotification := range telegramNotifications {
 		response, err := handler.vkClient.SendGetWallRequest(telegramNotification.Slug)
 		if err != nil {
 			continue
 		}
 
+		lastPostDate := telegramNotification.LastPostDate.Int64
 		items := response.Response.Items
 		for i := len(items) - 1; i >= 0; i-- {
-			if items[i].Date <= telegramNotification.LastPostDate.Int64 {
+			if items[i].Date <= lastPostDate {
 				continue
 			}
+
+			lastPostDate = items[i].Date
 
 			err := handler.telegramSender.SendVkPost(
 				telegramNotification.TelegramID,
 				telegramNotification.Slug,
 				telegramNotification.Name,
-				utils.FormatTimestampToDatetime(items[i].Date),
+				utils.FormatTimestampToDatetime(lastPostDate),
 				items[i].Text,
 			)
 			if err != nil {
@@ -50,7 +54,7 @@ func (handler *Handler) HandleNotifications() error {
 		err = handler.telegramRepository.Update(
 			telegramNotification.TelegramID,
 			telegramNotification.EntityID,
-			sql.NullInt64{Int64: items[0].Date, Valid: true},
+			sql.NullInt64{Int64: lastPostDate, Valid: true},
 		)
 		if err != nil {
 			return err

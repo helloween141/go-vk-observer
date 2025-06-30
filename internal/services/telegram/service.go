@@ -47,7 +47,8 @@ func (service *Service) AddSlug(telegramID int64, slug string) (string, error) {
 		return messages.SlugIsEmpty, nil
 	}
 
-	vkEntity, err = service.vkRepository.GetBySlug(slug)
+	vkEntity, _ = service.vkRepository.GetBySlug(slug)
+
 	if vkEntity == nil {
 		response, errReq := service.vkClient.SendGetGroupRequest(slug)
 		if errReq != nil {
@@ -63,7 +64,9 @@ func (service *Service) AddSlug(telegramID int64, slug string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-	} else {
+	}
+
+	if service.telegramRepository.IsEntityExistsByTelegramID(telegramID, vkEntity.ID) {
 		return fmt.Sprintf(messages.SlugAlreadyExists, slug), nil
 	}
 

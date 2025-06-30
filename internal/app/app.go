@@ -21,14 +21,7 @@ type Application struct {
 }
 
 func New(cfg *config.Config) (*Application, error) {
-	db, err := database.Init(
-		cfg.Database.Host,
-		cfg.Database.Username,
-		cfg.Database.Password,
-		cfg.Database.Port,
-		cfg.Database.Database,
-		cfg.Database.DisableSsl,
-	)
+	db, err := database.Init(cfg.Database.DSN)
 	if err != nil {
 		return nil, err
 	}

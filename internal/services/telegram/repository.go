@@ -52,6 +52,19 @@ func (repository *Repository) GetByTelegramID(telegramID int64) ([]dbstore.GetTe
 	return entities, nil
 }
 
+func (repository *Repository) IsEntityExistsByTelegramID(telegramID int64, entityID int32) bool {
+	existsResult, err := repository.query.IsTelegramNotificationExists(context.Background(), dbstore.IsTelegramNotificationExistsParams{
+		TelegramID: telegramID,
+		EntityID:   entityID,
+	})
+
+	if err != nil {
+		return false
+	}
+
+	return existsResult
+}
+
 func (repository *Repository) GetList() ([]dbstore.GetTelegramNotificationListRow, error) {
 	list, err := repository.query.GetTelegramNotificationList(context.Background())
 

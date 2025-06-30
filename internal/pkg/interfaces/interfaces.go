@@ -16,6 +16,7 @@ type TelegramSenderInterface interface {
 type TelegramRepositoryInterface interface {
 	GetList() ([]dbstore.GetTelegramNotificationListRow, error)
 	GetByTelegramID(telegramID int64) ([]dbstore.GetTelegramNotificationsByTelegramIDRow, error)
+	IsEntityExistsByTelegramID(telegramID int64, entityID int32) bool
 	Create(telegramID int64, entityID int32) error
 	Delete(telegramID int64, entityID int32) error
 	Update(telegramID int64, entityID int32, LstPostDate sql.NullInt64) error

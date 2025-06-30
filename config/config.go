@@ -13,12 +13,7 @@ type Config struct {
 		Port string
 	}
 	Database struct {
-		Host       string
-		Username   string
-		Password   string
-		Port       string
-		Database   string
-		DisableSsl string
+		DSN string
 	}
 	Vk struct {
 		BaseUrl     string
@@ -40,19 +35,9 @@ func Init() *Config {
 			Port: getEnvByKey("APP_PORT", "8080"),
 		},
 		Database: struct {
-			Host       string
-			Username   string
-			Password   string
-			Port       string
-			Database   string
-			DisableSsl string
+			DSN string
 		}{
-			Host:       getEnvByKey("DB_HOST", "postgres"),
-			Username:   getEnvByKey("DB_USERNAME", "forge"),
-			Password:   getEnvByKey("DB_PASSWORD", "secret"),
-			Port:       getEnvByKey("DB_PORT", "5432"),
-			Database:   getEnvByKey("DB_DATABASE", "app"),
-			DisableSsl: getEnvByKey("DB_SSL_MODE", "disable"),
+			DSN: getEnvByKey("DB_DSN", ""),
 		},
 		Vk: struct {
 			BaseUrl     string
@@ -69,7 +54,7 @@ func getEnvByKey(key string, defaultValue string) string {
 	value := os.Getenv(key)
 	if value == "" {
 		if defaultValue == "" {
-			log.Fatalf("Missing required environment variable %s", value)
+			log.Fatalf("Missing required environment variable %s", key)
 		}
 
 		value = defaultValue

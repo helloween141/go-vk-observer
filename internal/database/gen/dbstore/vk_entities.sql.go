@@ -48,14 +48,3 @@ func (q *Queries) GetVkEntityBySlug(ctx context.Context, slug string) (VkEntity,
 	)
 	return i, err
 }
-
-const isVkEntityExists = `-- name: IsVkEntityExists :one
-SELECT EXISTS(SELECT 1 FROM vk_entities WHERE id=$1)
-`
-
-func (q *Queries) IsVkEntityExists(ctx context.Context, id int32) (bool, error) {
-	row := q.db.QueryRowContext(ctx, isVkEntityExists, id)
-	var exists bool
-	err := row.Scan(&exists)
-	return exists, err
-}

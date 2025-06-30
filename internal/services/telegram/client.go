@@ -4,6 +4,7 @@ import (
 	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"go-vk-observer/internal/pkg/messages"
+	"go-vk-observer/internal/pkg/utils"
 	"log"
 )
 
@@ -39,11 +40,8 @@ func (c *Client) SendCommand(telegramID int64, text string) error {
 }
 
 func (c *Client) SendVkPost(telegramID int64, slug string, title string, datetime string, text string) error {
-	parseMode := tgbotapi.ModeMarkdown
-	text = tgbotapi.EscapeText(parseMode, text)
-
-	msg := tgbotapi.NewMessage(telegramID, fmt.Sprintf(messages.VkPostMessage, title, slug, datetime, text))
-	msg.ParseMode = parseMode
+	msg := tgbotapi.NewMessage(telegramID, fmt.Sprintf(messages.VkPostMessage, title, slug, datetime, utils.FixVKLinks(text)))
+	msg.ParseMode = tgbotapi.ModeMarkdown
 
 	_, err := c.bot.Send(msg)
 
