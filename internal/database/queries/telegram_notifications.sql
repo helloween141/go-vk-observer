@@ -23,3 +23,6 @@ RETURNING *;
 SELECT * FROM telegram_notifications
 JOIN vk_entities ve on telegram_notifications.entity_id = ve.id
 WHERE telegram_notifications.telegram_id=$1;
+
+-- name: IsTelegramNotificationExists :one
+SELECT EXISTS(SELECT 1 FROM telegram_notifications WHERE telegram_id=$1 AND entity_id=$2);

@@ -21,14 +21,7 @@ type Application struct {
 }
 
 func New(cfg *config.Config) (*Application, error) {
-	db, err := database.Init(
-		cfg.Database.Host,
-		cfg.Database.Username,
-		cfg.Database.Password,
-		cfg.Database.Port,
-		cfg.Database.Database,
-		cfg.Database.DisableSsl,
-	)
+	db, err := database.Init(cfg.Database.DSN)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +35,8 @@ func New(cfg *config.Config) (*Application, error) {
 	}
 
 	vkClient := vk.NewClient(cfg.Vk.BaseUrl, cfg.Vk.AccessToken, cfg.Vk.ApiVersion)
-	vkHandler := vk.NewHandler(*vkClient, telegramClient, telegramRepository)
+	vkService := vk.NewService()
+	vkHandler := vk.NewHandler(*vkClient, telegramClient, telegramRepository, vkService)
 
 	telegramService := telegram.NewService(telegramClient, vkClient, telegramRepository, vkRepository)
 	telegramHandler := telegram.NewHandler(telegramClient, telegramService)
