@@ -154,6 +154,22 @@ func (q *Queries) GetTelegramNotificationsByTelegramID(ctx context.Context, tele
 	return items, nil
 }
 
+const isTelegramNotificationExists = `-- name: IsTelegramNotificationExists :one
+SELECT EXISTS(SELECT 1 FROM telegram_notifications WHERE telegram_id=$1 AND entity_id=$2)
+`
+
+type IsTelegramNotificationExistsParams struct {
+	TelegramID int64
+	EntityID   int32
+}
+
+func (q *Queries) IsTelegramNotificationExists(ctx context.Context, arg IsTelegramNotificationExistsParams) (bool, error) {
+	row := q.db.QueryRowContext(ctx, isTelegramNotificationExists, arg.TelegramID, arg.EntityID)
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
+}
+
 const updateTelegramNotification = `-- name: UpdateTelegramNotification :one
 UPDATE telegram_notifications
 SET checked_at=now(), last_post_date=$1

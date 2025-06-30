@@ -19,7 +19,7 @@ FROM alpine:3.19
 
 RUN apk add --no-cache postgresql-client
 
-COPY --from=build /main /main
+COPY --from=build /main /app/main
 
 COPY --from=build /go/bin/goose /usr/local/bin/goose
 
@@ -27,11 +27,11 @@ COPY --from=build /go/bin/sqlc /usr/local/bin/sqlc
 
 EXPOSE 8080
 
-COPY sqlc.yaml ./
+COPY sqlc.yaml ./app
 
 COPY ./internal/database/migrations /app/database/migrations
 
-COPY ./docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY ./docker/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x ./app/entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["./app/entrypoint.sh"]

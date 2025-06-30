@@ -11,7 +11,7 @@ type ServiceInterface interface {
 	Start(userName string) string
 	AddSlug(telegramID int64, slug string) (string, error)
 	DeleteSlug(telegramID int64, slug string) (string, error)
-	GetAllSlugs(telegramID int64) (string, error)
+	GetSlugsList(telegramID int64) (string, error)
 }
 
 type Service struct {
@@ -47,7 +47,8 @@ func (service *Service) AddSlug(telegramID int64, slug string) (string, error) {
 		return messages.SlugIsEmpty, nil
 	}
 
-	vkEntity, err = service.vkRepository.GetBySlug(slug)
+	vkEntity, _ = service.vkRepository.GetBySlug(slug)
+
 	if vkEntity == nil {
 		response, errReq := service.vkClient.SendGetGroupRequest(slug)
 		if errReq != nil {
@@ -56,14 +57,16 @@ func (service *Service) AddSlug(telegramID int64, slug string) (string, error) {
 
 		groupInfo := response.Response.Groups
 		if groupInfo == nil {
-			return "", err
+			return fmt.Sprintf(messages.SlugNotFound, slug), nil
 		}
 
 		vkEntity, err = service.vkRepository.Create(slug, groupInfo[0].Name, string(dbstore.EntityTypeWALL))
 		if err != nil {
 			return "", err
 		}
-	} else {
+	}
+
+	if service.telegramRepository.IsEntityExistsByTelegramID(telegramID, vkEntity.ID) {
 		return fmt.Sprintf(messages.SlugAlreadyExists, slug), nil
 	}
 
@@ -93,12 +96,16 @@ func (service *Service) DeleteSlug(telegramID int64, slug string) (string, error
 	return fmt.Sprintf(messages.DeleteSlugSuccessful, slug), nil
 }
 
-func (service *Service) GetAllSlugs(telegramID int64) (string, error) {
+func (service *Service) GetSlugsList(telegramID int64) (string, error) {
 	var resultText string
 
 	entities, err := service.telegramRepository.GetByTelegramID(telegramID)
 	if err != nil {
 		return "", err
+	}
+
+	if len(entities) == 0 {
+		return messages.SlugsListIsEmpty, nil
 	}
 
 	for i, entity := range entities {

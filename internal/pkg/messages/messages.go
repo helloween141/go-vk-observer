@@ -1,19 +1,21 @@
 package messages
 
-const StartMessage = "👋 *Hello, %s!*\n\n" +
-	"I will observe 👀 VK groups by their *slugs* and notify 🔔 you about new posts.\n\n" +
-	"*Slug* - is the identifier of VK group.\n" +
-	"You can get it here: `https://vk.com/<slug>`\n\n" +
-	"*Available commands:*\n" +
-	"1. /add *<slug>*\n" +
-	"2. /delete *<slug>*\n" +
-	"3. /list"
-const AddSlugSuccessful = "✅ Slug `%s` was added"
-const DeleteSlugSuccessful = "✅ Slug `%s` was deleted"
-const SlugNotFound = "❌ Slug `%s` not found"
-const SlugIsEmpty = "❌ Slug is empty"
-const SlugAlreadyExists = "❌ Slug `%s` already exists"
-const VkPostMessage = "🆕️ [*%s*](https://vk.com/%s) | 🗓 %s\n\n%s"
-const SlugsListMessage = "%d. [%s](https://vk.com/%s) | `%s`\n\n"
-const InvalidCommand = "❌ Invalid command"
-const CommonError = "❌ Something went wrong"
+const StartMessage = "👋 Привет, *%s!*\n\n" +
+	"Я отслеживаю 👀 новые посты в сообществах ВКонтакте.\n\n" +
+	"📌 Сначала добавь идентификаторы интересных тебе сообществ.\n\n" +
+	"⏰ Раз в час я буду проверять: появились ли новые посты?\n\n" +
+	"📩 Если появились, то отправлю тебе сообщения с их содержанием.\n\n" +
+	"*Где взять идентификатор?*:\nНапример: `https://vk.com/vk`, где `vk` - это идентификатор. \n\n" +
+	"*Доступные команды:*\n" +
+	"/add *<id>* - добавить идентификатор\n" +
+	"/delete *<id>* - удалить идентификатор\n" +
+	"/list - список добавленных идентификатор"
+const AddSlugSuccessful = "✅ Идентификатор `%s` добавлен"
+const DeleteSlugSuccessful = "✅ Идентификатор `%s` удален"
+const SlugNotFound = "❌ Идентификатор `%s` не найден"
+const SlugIsEmpty = "❌ Идентификатор не задан"
+const SlugAlreadyExists = "❌ Идентификатор `%s` уже существует"
+const SlugsListIsEmpty = "ℹ️ Список идентификаторов пустой!"
+const InvalidCommand = "❌ Неверная команда"
+const CommonError = "❌ Что-то пошло не так"
+const SlugsListMessage = "%d. [%s](https://vk.com/%s) /// `%s`\n\n"
