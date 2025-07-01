@@ -57,7 +57,7 @@ func (service *Service) AddSlug(telegramID int64, slug string) (string, error) {
 
 		groupInfo := response.Response.Groups
 		if groupInfo == nil {
-			return "", err
+			return fmt.Sprintf(messages.SlugNotFound, slug), nil
 		}
 
 		vkEntity, err = service.vkRepository.Create(slug, groupInfo[0].Name, string(dbstore.EntityTypeWALL))

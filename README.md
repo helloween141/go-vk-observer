@@ -1,30 +1,31 @@
-# 🔍 VK Group Observer 🤖
+# 🤖 VK Observer
 
-A Telegram bot that monitors new posts in public VK groups and delivers them straight to your Telegram with real-time notifications.
+Telegram-бот для мониторинга новых записей в сообществах ВКонтакте и отправки их в Telegram.
 
-## ✨ Features
+## Возможности
 
-- 🔍 **Real-time monitoring** - Checks VK groups every hour for new content
-- 📩 **Smart notifications** - Get clean formatted messages with post content
-- ⚙️ **Easy management** - Simple commands to control your subscriptions
-- 📊 **Multi-group support** - Track unlimited VK communities
-- 🔔 **Instant alerts** - Be the first to know about new posts
+- 🔍 **Мониторинг в реальном времени** — проверяет сообщества ВКонтакте каждый час на наличие новых постов
+- 📩 **Умные уведомления** — получайте чистые, отформатированные сообщения с содержимым записей
+- ⚙️ **Простое управление** — удобные команды для контроля подписок
+- 📊 **Поддержка множества сообществ** — отслеживайте неограниченное количество сообществ
+- 🔔 **Мгновенные оповещения** — будьте первыми, кто узнает о новых записях
 
-## 🚀 How to Use
+## Превью
+![image](https://github.com/user-attachments/assets/c7d950c3-f366-4714-95d6-a48acf943b88)
 
-### 🏁 Getting Started
+## Как использовать?
 
-1. **Find the bot** in Telegram: [VK Group Observer](https://t.me/vk_obs_bot)
-2. **Start the conversation** with `/start`
-3. **Add your first group** with `/add <slug>` (where `slug` is the group's URL identifier)
+### 🚀 Начало работы
 
-### 🛠️ Command Reference
+1. **Найдите бота** в Telegram: [VK Observer](https://t.me/vk_obs_bot)
+2. **Начните диалог** командой `/start`
+3. **Добавьте первый идентификатор** командой `/add <id>` (где `id` — идентификатор из URL)
 
-| Command | Description | Example |
-|---------|-------------|---------|
-| `/start` | Show welcome message and basic help | `/start` |
-| `/add <slug>` | Subscribe to a VK group | `/add vk` |
-| `/delete <slug>` | Unsubscribe from a group | `/delete vk` |
-| `/list` | Show all your subscriptions | `/list` |
+### 🛠️ Список команд
 
-![License](https://img.shields.io/badge/license-MIT-green)
+| Команда        | Описание                            | Пример       |
+|----------------|-------------------------------------|--------------|
+| `/start`       | Показать приветствие и справку      | `/start`     |
+| `/add <id>`    | Добавить идентификатор              | `/add vk`    |
+| `/delete <id>` | Удалить идентификатор               | `/delete vk` |
+| `/list`        | Показать добавленные идентификаторы | `/list`      |

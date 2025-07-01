@@ -37,7 +37,7 @@ func Init() *Config {
 		Database: struct {
 			DSN string
 		}{
-			DSN: getEnvByKey("DB_DSN", ""),
+			DSN: getEnvByKey("DB_DSN", "postgres://forge:secret@postgres:5432/app?sslmode=disable&search_path=public"),
 		},
 		Vk: struct {
 			BaseUrl     string

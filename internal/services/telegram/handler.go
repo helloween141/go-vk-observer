@@ -56,13 +56,13 @@ func (handler *Handler) HandleCommands() {
 		}
 
 		if err != nil {
-			log.Println(err)
+			log.Println("Message error: ", err)
 			resultText = messages.CommonError
 		}
 
 		err = handler.telegramClient.SendCommand(update.Message.Chat.ID, resultText)
 		if err != nil {
-			log.Println(err)
+			log.Println("Send message error: ", err)
 			return
 		}
 	}
