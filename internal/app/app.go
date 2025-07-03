@@ -35,7 +35,8 @@ func New(cfg *config.Config) (*Application, error) {
 	}
 
 	vkClient := vk.NewClient(cfg.Vk.BaseUrl, cfg.Vk.AccessToken, cfg.Vk.ApiVersion)
-	vkHandler := vk.NewHandler(*vkClient, telegramClient, telegramRepository)
+	vkService := vk.NewService()
+	vkHandler := vk.NewHandler(*vkClient, telegramClient, telegramRepository, vkService)
 
 	telegramService := telegram.NewService(telegramClient, vkClient, telegramRepository, vkRepository)
 	telegramHandler := telegram.NewHandler(telegramClient, telegramService)

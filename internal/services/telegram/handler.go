@@ -50,7 +50,7 @@ func (handler *Handler) HandleCommands() {
 		case "delete":
 			resultText, err = handler.telegramService.DeleteSlug(telegramID, arg)
 		case "list":
-			resultText, err = handler.telegramService.GetAllSlugs(telegramID)
+			resultText, err = handler.telegramService.GetSlugsList(telegramID)
 		default:
 			resultText = messages.InvalidCommand
 		}
@@ -60,7 +60,7 @@ func (handler *Handler) HandleCommands() {
 			resultText = messages.CommonError
 		}
 
-		err = handler.telegramClient.SendCommand(update.Message.Chat.ID, resultText)
+		err = handler.telegramClient.SendMessage(update.Message.Chat.ID, resultText, true)
 		if err != nil {
 			log.Println("Send message error: ", err)
 			return

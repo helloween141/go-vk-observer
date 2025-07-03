@@ -11,7 +11,7 @@ type ServiceInterface interface {
 	Start(userName string) string
 	AddSlug(telegramID int64, slug string) (string, error)
 	DeleteSlug(telegramID int64, slug string) (string, error)
-	GetAllSlugs(telegramID int64) (string, error)
+	GetSlugsList(telegramID int64) (string, error)
 }
 
 type Service struct {
@@ -96,12 +96,16 @@ func (service *Service) DeleteSlug(telegramID int64, slug string) (string, error
 	return fmt.Sprintf(messages.DeleteSlugSuccessful, slug), nil
 }
 
-func (service *Service) GetAllSlugs(telegramID int64) (string, error) {
+func (service *Service) GetSlugsList(telegramID int64) (string, error) {
 	var resultText string
 
 	entities, err := service.telegramRepository.GetByTelegramID(telegramID)
 	if err != nil {
 		return "", err
+	}
+
+	if len(entities) == 0 {
+		return messages.SlugsListIsEmpty, nil
 	}
 
 	for i, entity := range entities {

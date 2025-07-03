@@ -3,18 +3,18 @@ package vk
 import (
 	"database/sql"
 	"go-vk-observer/internal/pkg/interfaces"
-	"go-vk-observer/internal/pkg/utils"
 	"log"
 )
 
 type Handler struct {
 	vkClient           Client
+	vkService          ServiceInterface
 	telegramSender     interfaces.TelegramSenderInterface
 	telegramRepository interfaces.TelegramRepositoryInterface
 }
 
-func NewHandler(vkClient Client, telegramSender interfaces.TelegramSenderInterface, telegramRepository interfaces.TelegramRepositoryInterface) *Handler {
-	return &Handler{vkClient: vkClient, telegramSender: telegramSender, telegramRepository: telegramRepository}
+func NewHandler(vkClient Client, telegramSender interfaces.TelegramSenderInterface, telegramRepository interfaces.TelegramRepositoryInterface, vkService ServiceInterface) *Handler {
+	return &Handler{vkClient: vkClient, telegramSender: telegramSender, telegramRepository: telegramRepository, vkService: vkService}
 }
 
 func (handler *Handler) HandleNotifications() error {
@@ -30,23 +30,19 @@ func (handler *Handler) HandleNotifications() error {
 		}
 
 		lastPostDate := telegramNotification.LastPostDate.Int64
-		items := response.Response.Items
-		for i := len(items) - 1; i >= 0; i-- {
-			if items[i].Date <= lastPostDate {
+		posts := response.Response.Posts
+		for i := len(posts) - 1; i >= 0; i-- {
+			if posts[i].Date <= lastPostDate {
 				continue
 			}
 
-			lastPostDate = items[i].Date
+			lastPostDate = posts[i].Date
 
-			err := handler.telegramSender.SendVkPost(
-				telegramNotification.TelegramID,
-				telegramNotification.Slug,
-				telegramNotification.Name,
-				utils.FormatTimestampToDatetime(lastPostDate),
-				items[i].Text,
-			)
+			text := handler.vkService.GetPostText(telegramNotification.Name, posts[i])
+
+			err := handler.telegramSender.SendMessage(telegramNotification.TelegramID, text, false)
 			if err != nil {
-				log.Println(err)
+				log.Println("Can't send message", err)
 				continue
 			}
 		}

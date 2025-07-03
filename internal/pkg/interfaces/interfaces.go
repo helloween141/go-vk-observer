@@ -9,8 +9,7 @@ import (
 
 type TelegramSenderInterface interface {
 	GetBot() *tgbotapi.BotAPI
-	SendCommand(telegramID int64, text string) error
-	SendVkPost(telegramID int64, slug string, title string, datetime string, text string) error
+	SendMessage(telegramID int64, text string, isCommand bool) error
 }
 
 type TelegramRepositoryInterface interface {
