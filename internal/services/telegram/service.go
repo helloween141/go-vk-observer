@@ -43,10 +43,6 @@ func (service *Service) AddSlug(telegramID int64, slug string) (string, error) {
 	var vkEntity *dbstore.VkEntity
 	var err error
 
-	if slug == "" {
-		return messages.SlugIsEmpty, nil
-	}
-
 	vkEntity, _ = service.vkRepository.GetBySlug(slug)
 
 	if vkEntity == nil {
@@ -79,10 +75,6 @@ func (service *Service) AddSlug(telegramID int64, slug string) (string, error) {
 }
 
 func (service *Service) DeleteSlug(telegramID int64, slug string) (string, error) {
-	if slug == "" {
-		return messages.SlugIsEmpty, nil
-	}
-
 	vkEntity, _ := service.vkRepository.GetBySlug(slug)
 	if vkEntity == nil {
 		return fmt.Sprintf(messages.SlugNotFound, slug), nil
@@ -108,6 +100,7 @@ func (service *Service) GetSlugsList(telegramID int64) (string, error) {
 		return messages.SlugsListIsEmpty, nil
 	}
 
+	resultText = messages.SlugsListTitle
 	for i, entity := range entities {
 		resultText += fmt.Sprintf(messages.SlugsListMessage, i+1, entity.Name, entity.Slug, entity.Slug)
 	}

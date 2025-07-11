@@ -10,6 +10,7 @@ import (
 type TelegramSenderInterface interface {
 	GetBot() *tgbotapi.BotAPI
 	SendMessage(telegramID int64, message string, isCommand bool) error
+	SendMenu(telegramID int64) error
 }
 
 type TelegramRepositoryInterface interface {
