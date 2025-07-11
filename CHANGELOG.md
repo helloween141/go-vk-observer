@@ -1,5 +1,8 @@
 # Changelog
 
-## Added
+## Unreleased
 
-- MVP
+### Added
+
+- Отправка команд с помощью `InlineKeyboard`
+- Добавление, удаление сообщества по `url`
