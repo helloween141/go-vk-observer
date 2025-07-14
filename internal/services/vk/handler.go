@@ -36,8 +36,6 @@ func (handler *Handler) HandleNotifications() error {
 				continue
 			}
 
-			lastPostDate = posts[i].Date
-
 			text, err := handler.vkService.CreatePostMessage(telegramNotification.Name, posts[i])
 			if err != nil {
 				log.Println("Can't create Telegram message", err)
@@ -48,6 +46,8 @@ func (handler *Handler) HandleNotifications() error {
 			if err != nil {
 				log.Println("Can't send message to Telegram", err)
 			}
+
+			lastPostDate = posts[i].Date
 		}
 
 		err = handler.telegramRepository.Update(
@@ -56,7 +56,7 @@ func (handler *Handler) HandleNotifications() error {
 			sql.NullInt64{Int64: lastPostDate, Valid: true},
 		)
 		if err != nil {
-			return err
+			continue
 		}
 	}
 
