@@ -24,10 +24,11 @@ type TelegramRepositoryInterface interface {
 
 type VkRepositoryInterface interface {
 	GetBySlug(slug string) (*dbstore.VkEntity, error)
-	Create(slug string, name string, entityType string) (*dbstore.VkEntity, error)
+	Create(slug string, name string) (*dbstore.VkEntity, error)
 }
 
 type VkClientInterface interface {
 	SendGetWallRequest(slug string) (*responses.WallResponse, error)
 	SendGetGroupRequest(slug string) (*responses.GroupResponse, error)
+	SendGetUserRequest(slug string) (*responses.UserResponse, error)
 }

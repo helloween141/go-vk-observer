@@ -24,11 +24,10 @@ func (repository *Repository) GetBySlug(slug string) (*dbstore.VkEntity, error) 
 	return &vkEntity, nil
 }
 
-func (repository *Repository) Create(slug string, name string, entityType string) (*dbstore.VkEntity, error) {
+func (repository *Repository) Create(slug string, name string) (*dbstore.VkEntity, error) {
 	vkEntity, err := repository.query.CreateVkEntity(context.Background(), dbstore.CreateVkEntityParams{
 		Slug: slug,
 		Name: name,
-		Type: dbstore.EntityType(entityType),
 	})
 	if err != nil {
 		log.Println(err)

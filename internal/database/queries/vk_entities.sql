@@ -1,6 +1,6 @@
 -- name: CreateVkEntity :one
-INSERT INTO vk_entities (slug, name, type)
-VALUES ($1, $2, $3)
+INSERT INTO vk_entities (slug, name)
+VALUES ($1, $2)
 RETURNING *;
 
 -- name: GetVkEntityBySlug :one

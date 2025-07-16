@@ -9,6 +9,7 @@ import (
 )
 
 const timeout = 10
+const maxPostsCount = "10"
 
 type Client struct {
 	httpClient  *http.Client
@@ -31,7 +32,7 @@ func NewClient(baseUrl string, accessToken string, apiVersion string) *Client {
 func (client *Client) SendGetWallRequest(slug string) (*responses.WallResponse, error) {
 	request := requests.NewGetWallRequest(map[string]string{
 		"domain": slug,
-		"count":  "10",
+		"count":  maxPostsCount,
 	})
 
 	resp, err := client.makeRequest(request)
@@ -62,6 +63,27 @@ func (client *Client) SendGetGroupRequest(slug string) (*responses.GroupResponse
 	var responseBody *responses.GroupResponse
 
 	err = json.NewDecoder(resp.Body).Decode(&responseBody)
+	if err != nil {
+		return nil, err
+	}
+
+	return responseBody, nil
+}
+
+func (client *Client) SendGetUserRequest(slug string) (*responses.UserResponse, error) {
+	request := requests.NewGetUserRequest(map[string]string{
+		"user_ids": slug,
+	})
+
+	resp, err := client.makeRequest(request)
+	if err != nil {
+		return nil, err
+	}
+
+	var responseBody *responses.UserResponse
+
+	err = json.NewDecoder(resp.Body).Decode(&responseBody)
+
 	if err != nil {
 		return nil, err
 	}
